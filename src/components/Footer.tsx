@@ -1,32 +1,66 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { 
+  Facebook, 
+  Twitter, 
+  Instagram, 
+  Linkedin, 
+  Youtube,
+  Mail,
+  Phone,
+  MapPin
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Newsletter from './Newsletter';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const socialLinks = [
+    { icon: Facebook, href: 'https://facebook.com/flourishednutrition', label: 'Facebook' },
+    { icon: Twitter, href: 'https://twitter.com/flourishednutr', label: 'Twitter' },
+    { icon: Instagram, href: 'https://instagram.com/flourishednutrition', label: 'Instagram' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/flourished-nutrition', label: 'LinkedIn' },
+    { icon: Youtube, href: 'https://youtube.com/flourishednutrition', label: 'YouTube' }
+  ];
+
+  const quickLinks = [
+    { label: 'Menu', href: '/menu' },
+    { label: 'Family Meals', href: '/family-meals' },
+    { label: 'How It Works', href: '/how-it-works' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Blog', href: '/blog' }
+  ];
+
+  const legalLinks = [
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms' },
+    { label: 'Cookie Policy', href: '/cookie-policy' },
+    { label: 'FAQ', href: '/faq' }
+  ];
 
   return (
     <footer className="bg-gray-900 text-gray-300">
+      <Newsletter />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Flourished Nutrition</h3>
             <p className="text-gray-400 mb-4">
-              Delivering nutritious, chef-crafted meals to help you live a healthier life.
+              Making healthy eating accessible, enjoyable, and sustainable for everyone.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-emerald-400 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">
-                <Youtube className="w-5 h-5" />
-              </a>
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-emerald-400 transition-colors"
+                  aria-label={label}
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -34,21 +68,33 @@ const Footer = () => {
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="#menu" className="hover:text-emerald-400 transition-colors">Our Menu</a>
-              </li>
-              <li>
-                <a href="#how-it-works" className="hover:text-emerald-400 transition-colors">How It Works</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-emerald-400 transition-colors">About Us</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-emerald-400 transition-colors">Blog</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-emerald-400 transition-colors">FAQs</a>
-              </li>
+              {quickLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link 
+                    to={href}
+                    className="text-gray-400 hover:text-emerald-400 transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-white text-lg font-semibold mb-4">Legal</h3>
+            <ul className="space-y-2">
+              {legalLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link 
+                    to={href}
+                    className="text-gray-400 hover:text-emerald-400 transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -62,7 +108,9 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-emerald-400" />
-                <span>support@flourishednutrition.com</span>
+                <a href="mailto:support@flourishednutrition.com" className="hover:text-emerald-400">
+                  support@flourishednutrition.com
+                </a>
               </li>
               <li className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-emerald-400" />
@@ -70,38 +118,10 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Newsletter</h3>
-            <p className="text-gray-400 mb-4">
-              Subscribe to get special offers, free giveaways, and health tips.
-            </p>
-            <form className="space-y-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-emerald-400"
-              />
-              <button className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors">
-                Subscribe
-              </button>
-            </form>
-          </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 mt-8 border-t border-gray-800 text-sm text-gray-400">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div>
-              © {currentYear} Flourished Nutrition. All rights reserved.
-            </div>
-            <div className="flex space-x-6">
-              <a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">Cookie Policy</a>
-            </div>
-          </div>
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <p>© {new Date().getFullYear()} Flourished Nutrition. All rights reserved.</p>
         </div>
       </div>
     </footer>

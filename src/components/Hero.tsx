@@ -5,7 +5,7 @@ interface HeroProps {
   onOrderNow: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onOrderNow }) => {
+const Hero = ({ onOrderNow }: HeroProps) => {
   return (
     <div className="relative min-h-screen flex items-center">
       <div className="absolute inset-0 bg-hero-pattern bg-cover bg-center">
@@ -37,12 +37,12 @@ const Hero: React.FC<HeroProps> = ({ onOrderNow }) => {
               <span>Order Now</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button 
-              onClick={() => window.location.href = '#menu'}
+            <a 
+              href="#menu"
               className="btn-secondary"
             >
               View Menu
-            </button>
+            </a>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heart, Users, Leaf, Award, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 
@@ -48,6 +48,7 @@ interface TeamMemberProps {
 
 const TeamMember: React.FC<TeamMemberProps> = ({ image, name, role, bio, socialLinks, delay = 0 }) => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
+  const [imageError, setImageError] = useState(false);
 
   return (
     <div
@@ -57,32 +58,53 @@ const TeamMember: React.FC<TeamMemberProps> = ({ image, name, role, bio, socialL
       }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="card overflow-hidden">
-        <div className="aspect-w-3 aspect-h-4">
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-64 object-cover"
-          />
+      <div className="card overflow-hidden text-center">
+        <div className="mb-6">
+          <div className="w-48 h-48 mx-auto rounded-full overflow-hidden bg-gray-100 shadow-lg">
+            <img
+              src={imageError ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop" : image}
+              alt={name}
+              className="w-full h-full object-cover"
+              onError={() => {
+                setImageError(true);
+                console.warn('Founder image failed to load, using placeholder');
+              }}
+            />
+          </div>
         </div>
         <div className="p-6">
           <h3 className="text-xl font-semibold mb-1">{name}</h3>
           <p className="text-emerald-600 font-medium mb-3">{role}</p>
           <p className="text-gray-600 mb-4">{bio}</p>
           {socialLinks && (
-            <div className="flex space-x-4">
+            <div className="flex justify-center space-x-4">
               {socialLinks.linkedin && (
-                <a href={socialLinks.linkedin} className="text-gray-400 hover:text-emerald-600 transition-colors">
+                <a 
+                  href={socialLinks.linkedin} 
+                  className="text-gray-400 hover:text-emerald-600 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
               )}
               {socialLinks.twitter && (
-                <a href={socialLinks.twitter} className="text-gray-400 hover:text-emerald-600 transition-colors">
+                <a 
+                  href={socialLinks.twitter} 
+                  className="text-gray-400 hover:text-emerald-600 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Twitter className="w-5 h-5" />
                 </a>
               )}
               {socialLinks.instagram && (
-                <a href={socialLinks.instagram} className="text-gray-400 hover:text-emerald-600 transition-colors">
+                <a 
+                  href={socialLinks.instagram} 
+                  className="text-gray-400 hover:text-emerald-600 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Instagram className="w-5 h-5" />
                 </a>
               )}
@@ -121,7 +143,7 @@ const About = () => {
   ];
 
   const founder = {
-    image: "/founder.jpg",
+    image: "/images/founder.jpg",
     name: "Brianna Nichols",
     role: "Founder & CEO",
     bio: "With a passion for nutrition and wellness, Brianna founded Flourished to make healthy eating accessible and enjoyable for everyone. Her vision combines culinary excellence with nutritional science to create meals that nourish both body and soul.",
@@ -133,7 +155,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={missionRef}
@@ -141,8 +163,8 @@ const About = () => {
             missionIsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="section-title">Our Mission</h2>
-          <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Our Mission</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-lg">
             At Flourished, we believe that everyone deserves access to nutritious, 
             delicious meals that fuel their body and mind. Our mission is to make 
             healthy eating effortless and enjoyable, one meal at a time.
@@ -150,7 +172,7 @@ const About = () => {
         </div>
 
         <div className="mb-20">
-          <h2 className="section-title text-center mb-12">Our Values</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-12">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <ValueCard key={index} {...value} delay={index * 200} />
@@ -159,7 +181,7 @@ const About = () => {
         </div>
 
         <div>
-          <h2 className="section-title text-center mb-12">Meet Our Founder</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-12">Meet Our Founder</h2>
           <div className="max-w-lg mx-auto">
             <TeamMember {...founder} />
           </div>

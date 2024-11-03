@@ -3,6 +3,9 @@ import type { Meal } from '../types/meal';
 
 export interface CartItem extends Meal {
   quantity: number;
+  excludedIngredients: string[];
+  addedIngredients: string[];
+  showIngredients: boolean;
 }
 
 export const TAX_RATE = 0.0825; // 8.25% tax rate
@@ -21,8 +24,60 @@ export const useCart = () => {
             : item
         );
       }
-      return [...prevItems, { ...meal, quantity: 1 }];
+      return [...prevItems, { 
+        ...meal, 
+        quantity: 1, 
+        excludedIngredients: [],
+        addedIngredients: [],
+        showIngredients: false 
+      }];
     });
+  };
+
+  const toggleIngredients = (id: string) => {
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id
+          ? { ...item, showIngredients: !item.showIngredients }
+          : item
+      )
+    );
+  };
+
+  const updateIngredients = (id: string, excludedIngredients: string[]) => {
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id
+          ? { ...item, excludedIngredients }
+          : item
+      )
+    );
+  };
+
+  const addCustomIngredient = (id: string, ingredientId: string) => {
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id
+          ? { 
+              ...item, 
+              addedIngredients: [...item.addedIngredients, ingredientId]
+            }
+          : item
+      )
+    );
+  };
+
+  const removeCustomIngredient = (id: string, ingredientId: string) => {
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id
+          ? { 
+              ...item, 
+              addedIngredients: item.addedIngredients.filter(i => i !== ingredientId)
+            }
+          : item
+      )
+    );
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -57,6 +112,10 @@ export const useCart = () => {
     addToCart,
     updateQuantity,
     removeItem,
+    toggleIngredients,
+    updateIngredients,
+    addCustomIngredient,
+    removeCustomIngredient,
     getTotal,
     getTaxAmount,
     getFinalTotal,
